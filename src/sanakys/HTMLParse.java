@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.io.PrintWriter;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.lang.StringBuffer;
 
 public class HTMLParse {
 	private String html;
@@ -32,11 +33,14 @@ public class HTMLParse {
 		String s=this.getLangSec(lang);
 		p=Pattern.compile(tablepattern);
 		m=p.matcher(s);
+		//stringbuffer for string building/replacement
+		StringBuffer sb=new StringBuffer("");
 		while(m.find()){
-			String temp=m.group();
-			HTMLTableParse htp=new HTMLTableParse(temp);
 			//replace the string inside the old string with the new string:
-			s=s.substring(0, m.start())+htp.getString()+s.substring(m.end());
+			
+			s=s.substring(0, m.start())
+					+HTMLTableParse.getFormattedTableString(m.group())
+					+s.substring(m.end());
 			//update m
 			m=p.matcher(s);
 		}

@@ -6,32 +6,40 @@
  */
 
 package sanakys;
-import java.lang.StringBuilder;
+import java.lang.StringBuffer;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-//using a StringBuilder for faster string construction. 
+//using a stringbuffer for faster string construction. 
 public class HTMLTableParse {
 	public static String getFormattedTableString(String data){
-		//init the stringbuilder
-		StringBuilder sb;
+		//init the stringbuffer
+		StringBuffer sb;
 		if(data!=null)
-			sb=new StringBuilder(data);
+			sb=new StringBuffer(data);
 		else
 			//throw an exception since stringbuilder won't catch it
 			throw new java.lang.NullPointerException();
 		//end of init stringbuilder
 		
-		String localdata=this.data;
 		//process th & td:
-		localdata=localdata.replaceAll("<t[h,d](\\s?.)*?>", "");
-		localdata=localdata.replaceAll("</t[h,d]>", " ");
+		replaceStringsWith("<t[h,d](\\s?.)*?>","",sb);
+		replaceStringsWith("</t[h,d]>", " ",sb);
 		//process tr:
-		localdata=localdata.replaceAll("<tr(\\s?.)*?>", "");
-		localdata=localdata.replaceAll("</tr>","\n");
+		replaceStringsWith("<tr(\\s?.)*?>","",sb);
+		replaceStringsWith("</tr>", "\n",sb);
 		//process the rest:
-		localdata=localdata.replaceAll("<(\\s?.)+?>", "");
-		localdata=localdata.replaceAll("&#160;", " ");
-		return localdata;
+		replaceStringsWith("<(\\s?.)+?>", "",sb);
+		replaceStringsWith("&#160;", " ",sb);
+		return sb.toString();
+	}
+	private static void replaceStringsWith(String target, String replacement,StringBuffer sb){
+		//starting tag
+		Pattern p=Pattern.compile("target");
+		Matcher m=p.matcher(sb);
+		while(m.find()){
+			m.appendReplacement(sb, replacement);
+		}
+		m.appendTail(sb);
 	}
 }
