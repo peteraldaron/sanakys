@@ -6,11 +6,9 @@
  * for now, let's do everything linearly
  */
 package sanakys;
-import java.util.ArrayList;
-import java.io.PrintWriter;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.lang.StringBuffer;
+import java.util.*;
+import java.io.*;
+import java.util.regex.*;
 
 public class HTMLParse {
 	private String html;
@@ -33,14 +31,11 @@ public class HTMLParse {
 		String s=this.getLangSec(lang);
 		p=Pattern.compile(tablepattern);
 		m=p.matcher(s);
-		//stringbuffer for string building/replacement
-		StringBuffer sb=new StringBuffer("");
 		while(m.find()){
+			String temp=m.group();
+			HTMLTableParse htp=new HTMLTableParse(temp);
 			//replace the string inside the old string with the new string:
-			
-			s=s.substring(0, m.start())
-					+HTMLTableParse.getFormattedTableString(m.group())
-					+s.substring(m.end());
+			s=s.substring(0, m.start())+htp.getString()+s.substring(m.end());
 			//update m
 			m=p.matcher(s);
 		}
@@ -182,5 +177,14 @@ public class HTMLParse {
 		//trip the last few characters:
 		s=s.substring(0,s.length()-4);
 		return s;
+	}
+	
+	public static void main(String[] args) {
+		HTMLParse parser=new HTMLParse("http://en.wiktionary.org/wiki/nainen");
+		System.out.println("Default Lookup language is Finnish, but you can specify language by:");
+	    System.out.println( "java HTMLParse [word] [Language]");
+	    System.out.println( "Note that word is case sensitive");
+		System.out.println("------------------------------------------------");
+		parser.parse("Finnish");
 	}
 }
