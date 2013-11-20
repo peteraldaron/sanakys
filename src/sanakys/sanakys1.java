@@ -7,7 +7,7 @@ public class sanakys1 {
       System.out.println("+++++++++++++++++++++++++++++++");
       System.out.print(">>>");
       while(sc.hasNextLine()){
-		    HTMLParse parser=new HTMLParse("http://en.wiktionary.org/wiki/"+sc.nextLine());
+		    HTMLParse parser=new HTMLParse("http://en.m.wiktionary.org/wiki/"+sc.nextLine());
         try{
 			  parser.parse("Finnish");
         }
