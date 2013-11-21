@@ -1,7 +1,5 @@
 package sanakys;
-import com.sun.*;
 import java.util.*;
-import java.lang.*;
 public class sanakys1 {
 
 	public static void main(String[] args) {
